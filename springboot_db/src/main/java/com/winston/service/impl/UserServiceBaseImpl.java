@@ -5,11 +5,11 @@ import com.github.pagehelper.PageInfo;
 import com.winston.entity.User;
 import com.winston.entity.UserExample;
 import com.winston.exception.ErrorException;
-import com.winston.jwt.comment.RawAccessJwtToken;
 import com.winston.mapper.UserMapper;
 import com.winston.result.CodeMsg;
 import com.winston.result.Result;
 import com.winston.service.IUserService;
+import com.winston.utils.PasswordHelper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,17 +21,17 @@ import java.util.List;
  * @author Winston
  * @title: UserServiceImpl
  * @projectName shiroDemo
- * @description:
+ * @description: 基本方法 没必要就尽量不改动这里的代码，而使用继承子类去扩展
  * @date 2019/7/24 14:25
  */
-@Service("userService")
-public class UserServiceImpl implements IUserService {
+@Service("userServiceBase")
+public class UserServiceBaseImpl implements IUserService {
 
     @Autowired
     private UserMapper mapper;
 
     @Autowired
-    private RawAccessJwtToken rawAccessJwtToken;
+    private PasswordHelper passwordHelper;
 
     @Override
     public List<User> queryAll() {
@@ -79,7 +79,11 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public int save(User user) {
-        String nicname = rawAccessJwtToken.getUserName();
+        User exist = queryByUsername(user.getUsername());
+        if(exist != null){
+            throw new ErrorException(CodeMsg.USER_ALREADY_EXIST);
+        }
+//        String nicname = rawAccessJwtToken.getUserName();
         long nowTime = new Date().getTime();
 
         user.setEnable(1);
@@ -89,7 +93,7 @@ public class UserServiceImpl implements IUserService {
         user.setUpdateOpr("system");
         user.setUpdateTime(nowTime);
         user.setOperatorType("0");
-//        passwordHelper.encryptPassword(user);
+        passwordHelper.encryptPassword(user.getUsername(), user.getPassword());
         mapper.insert(user);
         return user.getId();
     }

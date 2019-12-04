@@ -24,9 +24,6 @@ import javax.servlet.http.HttpSession;
 public class Logininterceptor implements HandlerInterceptor {
 
     @Autowired
-    private RedisService redisService;
-
-    @Autowired
     private SecurityProperties securityProperties;
 
     @Autowired

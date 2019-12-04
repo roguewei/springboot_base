@@ -22,7 +22,7 @@ public class GlobalExceptionHandler {
       **/
     @ExceptionHandler(value = ErrorException.class)
     Result errorException(ErrorException errorException){
-        return Result.error(CodeMsg.HAS_NOT_PERMISSION);
+        return Result.error(errorException.getCodeMsg());
     }
 
 }

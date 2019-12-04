@@ -18,23 +18,23 @@ import java.util.List;
  * @author Winston
  * @title: PermissionServiceImpl
  * @projectName shiroDemo
- * @description:
+ * @description: 基本方法 没必要就尽量不改动这里的代码，而使用继承子类去扩展
  * @date 2019/7/24 14:32
  */
-@Service("permissionService")
-public class PermissionServiceImpl implements IPermissionService {
+@Service("permissionServiceBase")
+public class PermissionServiceBaseImpl implements IPermissionService {
 
     @Autowired
     private PermissionMapper mapper;
 
     @Autowired
-    private IUserService userService;
+    private IUserService userServiceBase;
 
     @Autowired
-    private IUserRoleService userRoleService;
+    private IUserRoleService userRoleServiceBase;
 
     @Autowired
-    private IRolePermissionService rolePermissionService;
+    private IRolePermissionService rolePermissionServiceBase;
 
     @Override
     public List<Permission> queryAll() {
@@ -50,15 +50,15 @@ public class PermissionServiceImpl implements IPermissionService {
      */
     @Override
     public List<Permission> queryByUserName(String username) {
-        User user = userService.queryByUsername(username);
+        User user = userServiceBase.queryByUsername(username);
         if(user != null){
-            List<UserRoleKey> userRoleKeys = userRoleService.queryByUserId(user.getId());
+            List<UserRoleKey> userRoleKeys = userRoleServiceBase.queryByUserId(user.getId());
             if(userRoleKeys != null && userRoleKeys.size() > 0){
                 List<Integer> roleIds = new ArrayList<>();
                 for(UserRoleKey userRole : userRoleKeys){
                     roleIds.add(Integer.valueOf(userRole.getRoleId()));
                 }
-                List<RolePermissionKey> rolePermissionKeys = rolePermissionService.queryByRoleIds(roleIds);
+                List<RolePermissionKey> rolePermissionKeys = rolePermissionServiceBase.queryByRoleIds(roleIds);
                 if(rolePermissionKeys != null && rolePermissionKeys.size() > 0){
                     List<Integer> perIds = new ArrayList<>();
                     for(RolePermissionKey rolePer : rolePermissionKeys){

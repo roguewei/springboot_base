@@ -27,7 +27,7 @@ import java.util.Map;
 public class LoginService {
 
     @Autowired
-    private IUserService userService;
+    private IUserService userServiceBase;
 
     @Autowired
     private PasswordHelper passwordHelper;
@@ -39,7 +39,7 @@ public class LoginService {
     private TokenService tokenService;
 
     public Map<String, Object> login(User user){
-        User query = userService.queryByUsername(user.getUsername());
+        User query = userServiceBase.queryByUsername(user.getUsername());
         if(query == null){
             throw new ErrorException(CodeMsg.ACCOUNT_NOT_EXIST);
         }

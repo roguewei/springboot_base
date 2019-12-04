@@ -20,13 +20,13 @@ import java.util.Map;
 public class LoginService {
 
     @Autowired
-    private IUserService userService;
+    private IUserService userServiceBase;
 
     @Autowired
     private TokenService tokenService;
 
     public Map<String, Object> login(HttpServletRequest request, User user) {
-        User dbUser = userService.queryByUsername(user.getUsername());
+        User dbUser = userServiceBase.queryByUsername(user.getUsername());
         String token = tokenService.getToken(dbUser.getId(), dbUser.getUsername());
         Map<String, Object> result = new HashMap<>();
         result.put("token", token);

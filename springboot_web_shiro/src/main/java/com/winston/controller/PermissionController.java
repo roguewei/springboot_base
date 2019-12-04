@@ -22,11 +22,11 @@ import java.util.List;
 public class PermissionController {
 
     @Autowired
-    private IPermissionService permissionService;
+    private IPermissionService permissionServiceBase;
 
     @GetMapping("/queryByUsername")
     public Result queryByUsername(String username){
-        List<Permission> permissions = permissionService.queryByUserName(username);
+        List<Permission> permissions = permissionServiceBase.queryByUserName(username);
         return Result.success(permissions);
     }
 

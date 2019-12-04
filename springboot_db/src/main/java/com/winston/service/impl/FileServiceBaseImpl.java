@@ -16,8 +16,8 @@ import java.util.Map;
  * @Date:Create：in 2019/11/27 10:46
  * @Version：
  */
-@Service
-public class FileServiceImpl implements IFileService {
+@Service("fileServiceBase")
+public class FileServiceBaseImpl implements IFileService {
 
     @Autowired
     private FileUtil fileUtil;

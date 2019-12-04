@@ -25,10 +25,10 @@ import java.util.List;
 
 public class MyShiroRealm extends AuthorizingRealm {
     @Resource
-    private IUserService userService;
+    private IUserService userServiceBase;
 
     @Resource
-    private IPermissionService permissionService;
+    private IPermissionService permissionServiceBase;
 
     @Autowired
     private RedisSessionDAO redisSessionDAO;
@@ -40,7 +40,7 @@ public class MyShiroRealm extends AuthorizingRealm {
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         User user = (User) SecurityUtils.getSubject().getPrincipal();
-        List<Permission> permissionList = permissionService.queryByUserName(user.getUsername());
+        List<Permission> permissionList = permissionServiceBase.queryByUserName(user.getUsername());
         //权限信息对象info，用来存放查出的用户的所有的角色（role）及权限（permissoin）
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
         for (Permission permission : permissionList) {
@@ -62,7 +62,7 @@ public class MyShiroRealm extends AuthorizingRealm {
 //        }else{
 //            user = userService.selectByUsername(username);
 //        }
-        User user = userService.queryByUsername(username);
+        User user = userServiceBase.queryByUsername(username);
 
         if (user == null) throw new UnknownAccountException();
 

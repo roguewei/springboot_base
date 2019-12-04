@@ -68,7 +68,7 @@ public class ShiroConfig {
     private long maxWaitMillis;
 
     @Autowired
-    private IPermissionService permissionService;
+    private IPermissionService permissionServiceBase;
 
     @Autowired
     private SecurityProperties securityProperties;
@@ -124,7 +124,7 @@ public class ShiroConfig {
         //<!-- 过滤链定义，从上向下顺序执行，一般将 /**放在最为下边 -->:这是一个坑呢，一不小心代码就不好使了;
         //<!-- authc:所有url都必须认证通过才可以访问; anon:所有url都都可以匿名访问-->
         //自定义加载权限资源关系
-        List<Permission> permissionList = permissionService.queryAll();
+        List<Permission> permissionList = permissionServiceBase.queryAll();
         for (Permission permission :permissionList) {
             if (StringUtil.isNotEmpty(permission.getPerurl())){
                 String per = "perms["+permission.getPerurl()+"]";

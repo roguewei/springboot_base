@@ -13,11 +13,11 @@ import java.util.List;
  * @author Winston
  * @title: UserRoleServiceImpl
  * @projectName shiroDemo
- * @description:
+ * @description: 基本方法 没必要就尽量不改动这里的代码，而使用继承子类去扩展
  * @date 2019/7/24 14:33
  */
-@Service("userRoleService")
-public class UserRoleServiceImpl implements IUserRoleService {
+@Service("userRoleServiceBase")
+public class UserRoleServiceBaseImpl implements IUserRoleService {
 
     @Autowired
     private UserRoleMapper mapper;

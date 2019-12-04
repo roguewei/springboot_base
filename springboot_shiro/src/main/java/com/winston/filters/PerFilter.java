@@ -31,7 +31,7 @@ import java.util.List;
 public class PerFilter extends AuthorizationFilter {
 
     @Autowired
-    private IPermissionService permissionService;
+    private IPermissionService permissionServiceBase;
 
     /**
      * 对跨域提供支持
@@ -71,7 +71,7 @@ public class PerFilter extends AuthorizationFilter {
         if(user == null){
             codeMsg = CodeMsg.IS_NOT_LOGIN;
         }else{
-            List<Permission> permissionList = permissionService.queryByUserName(user.getUsername());
+            List<Permission> permissionList = permissionServiceBase.queryByUserName(user.getUsername());
             for(Permission permission : permissionList){
                 if(subject.isPermitted(permission.getPerurl())){
                     // 此处不管有没有权限都返回true，所以需要配置异常拦截器GlobalExceptionHandler
