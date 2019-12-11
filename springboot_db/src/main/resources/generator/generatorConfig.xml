@@ -45,9 +45,9 @@
         <!--<table tableName="role" domainObjectName="Role" selectByExampleQueryId="true" enableSelectByExample="true" enableDeleteByExample="true" enableUpdateByExample="true" enableCountByExample="true" enableInsert="true" enableDeleteByPrimaryKey="true" enableUpdateByPrimaryKey="true" enableSelectByPrimaryKey="true">-->
             <!--<generatedKey identity="true" sqlStatement="Mysql" column="id"/>-->
         <!--</table>-->
-        <!--<table tableName="user" domainObjectName="User" selectByExampleQueryId="true" enableSelectByExample="true" enableDeleteByExample="true" enableUpdateByExample="true" enableCountByExample="true" enableInsert="true" enableDeleteByPrimaryKey="true" enableUpdateByPrimaryKey="true" enableSelectByPrimaryKey="true">-->
-            <!--<generatedKey identity="true" sqlStatement="Mysql" column="id"/>-->
-        <!--</table>-->
+        <table tableName="user" domainObjectName="User" selectByExampleQueryId="true" enableSelectByExample="true" enableDeleteByExample="true" enableUpdateByExample="true" enableCountByExample="true" enableInsert="true" enableDeleteByPrimaryKey="true" enableUpdateByPrimaryKey="true" enableSelectByPrimaryKey="true">
+            <generatedKey identity="true" sqlStatement="Mysql" column="id"/>
+        </table>
         <!--<table tableName="role_permission" domainObjectName="RolePermission" selectByExampleQueryId="true" enableSelectByExample="true" enableDeleteByExample="true" enableUpdateByExample="true" enableCountByExample="true" enableInsert="true" enableDeleteByPrimaryKey="true" enableUpdateByPrimaryKey="true" enableSelectByPrimaryKey="true">-->
             <!--<generatedKey identity="true" sqlStatement="Mysql" column="id"/>-->
         <!--</table>-->
@@ -72,8 +72,8 @@
         <!--<table tableName="permission" domainObjectName="Permission" selectByExampleQueryId="true" enableSelectByExample="true" enableDeleteByExample="true" enableUpdateByExample="true" enableCountByExample="true" enableInsert="true" enableDeleteByPrimaryKey="true" enableUpdateByPrimaryKey="true" enableSelectByPrimaryKey="true">-->
             <!--<generatedKey identity="true" sqlStatement="Mysql" column="id"/>-->
         <!--</table>-->
-        <table tableName="excel_entity" domainObjectName="ExcelEnTity" selectByExampleQueryId="true" enableSelectByExample="true" enableDeleteByExample="true" enableUpdateByExample="true" enableCountByExample="true" enableInsert="true" enableDeleteByPrimaryKey="true" enableUpdateByPrimaryKey="true" enableSelectByPrimaryKey="true">
-        <generatedKey identity="true" sqlStatement="Mysql" column="id"/>
-        </table>
+        <!--<table tableName="excel_entity" domainObjectName="ExcelEnTity" selectByExampleQueryId="true" enableSelectByExample="true" enableDeleteByExample="true" enableUpdateByExample="true" enableCountByExample="true" enableInsert="true" enableDeleteByPrimaryKey="true" enableUpdateByPrimaryKey="true" enableSelectByPrimaryKey="true">-->
+        <!--<generatedKey identity="true" sqlStatement="Mysql" column="id"/>-->
+        <!--</table>-->
         </context>
     </generatorConfiguration>

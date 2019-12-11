@@ -22,5 +22,7 @@ public interface IUserService {
 
     void update(User user);
 
+    void updatePwd(User user);
+
     void delete(Integer id);
 }

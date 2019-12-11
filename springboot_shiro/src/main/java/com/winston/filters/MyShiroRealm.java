@@ -54,44 +54,20 @@ public class MyShiroRealm extends AuthorizingRealm {
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         //获取用户的输入账号
         String username = (String) authenticationToken.getPrincipal();
-//        if(LoginType.JSON.equals(securityProperties.getBrowser().getLoginType())){
-//            user = userService.selectByOpenId(username);
-//            if(user == null){
-//                user = userService.selectByUsername(username);
-//            }
-//        }else{
-//            user = userService.selectByUsername(username);
-//        }
         User user = userServiceBase.queryByUsername(username);
 
         if (user == null) throw new UnknownAccountException();
 
-        if (0 == user.getEnable()) {
+        if ("0".equals(user.getEnable())) {
             throw new LockedAccountException();//账号被锁定
         }
 
         SimpleAuthenticationInfo simpleAuthenticationInfo = null;
 
-//        if(LoginType.JSON.equals(securityProperties.getBrowser().getLoginType())
-//            && "wechat".equals(securityProperties.getBrowser().getLoginTag())){
-//            simpleAuthenticationInfo = new SimpleAuthenticationInfo(
-//                    user,//用户
-//                    user.getOpenidHex(),//密码
-//                    ByteSource.Util.bytes(username),
-//                    getName()//reaml name
-//            );
-//        }else{
-//            simpleAuthenticationInfo = new SimpleAuthenticationInfo(
-//                    user,//用户
-//                    user.getPassword(),//密码
-//                    ByteSource.Util.bytes(username),
-//                    getName()//reaml name
-//            );
-//        }
         simpleAuthenticationInfo = new SimpleAuthenticationInfo(
                 user,//用户
                 user.getPassword(),//密码
-                ByteSource.Util.bytes(username),
+                ByteSource.Util.bytes(user.getSalt()),
                 getName()//reaml name
         );
 
@@ -100,7 +76,6 @@ public class MyShiroRealm extends AuthorizingRealm {
         session.setAttribute("userSession", user);
         session.setAttribute("userSessionId", user.getId());
 
-//        UserContext.setUser(user);
         return simpleAuthenticationInfo;
     }
 

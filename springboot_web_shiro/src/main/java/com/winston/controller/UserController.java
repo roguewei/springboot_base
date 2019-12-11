@@ -100,6 +100,12 @@ public class UserController {
         return Result.success("修改用户成功");
     }
 
+    @PostMapping("/updatePwd")
+    public Result updatePwd(@RequestBody User user){
+        userService.updatePwd(user);
+        return Result.success("修改密码成功");
+    }
+
     @GetMapping("/del")
     public Result del(Long userId){
 //        userService.del(userId);

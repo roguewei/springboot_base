@@ -5,11 +5,13 @@ import com.github.pagehelper.PageInfo;
 import com.winston.entity.User;
 import com.winston.entity.UserExample;
 import com.winston.exception.ErrorException;
+import com.winston.jwt.comment.RawAccessJwtToken;
 import com.winston.mapper.UserMapper;
 import com.winston.result.CodeMsg;
 import com.winston.result.Result;
 import com.winston.service.IUserService;
 import com.winston.utils.PasswordHelper;
+import com.winston.utils.StringUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,6 +35,9 @@ public class UserServiceBaseImpl implements IUserService {
     @Autowired
     private PasswordHelper passwordHelper;
 
+    @Autowired
+    private RawAccessJwtToken rawAccessJwtToken;
+
     @Override
     public List<User> queryAll() {
         return mapper.selectByExample(new UserExample());
@@ -48,9 +53,6 @@ public class UserServiceBaseImpl implements IUserService {
         }
         if(StringUtils.isNotBlank(user.getUsername())) {
             criteria.andUsernameEqualTo(user.getUsername());
-        }
-        if(user.getOpenId() != null){
-            criteria.andOpenIdEqualTo(user.getOpenId());
         }
         List<User> users = mapper.selectByExample(example);
         users.forEach(item -> {
@@ -83,18 +85,20 @@ public class UserServiceBaseImpl implements IUserService {
         if(exist != null){
             throw new ErrorException(CodeMsg.USER_ALREADY_EXIST);
         }
-//        String nicname = rawAccessJwtToken.getUserName();
+        String userName = rawAccessJwtToken.getUserName();
         long nowTime = new Date().getTime();
+        String salt = StringUtil.getRandomString(5);
 
-        user.setEnable(1);
+        user.setEnable("1");
         user.setState("1");
-        user.setCreateOpr("system");
+        user.setCreateOpr(userName);
         user.setCreateTime(nowTime);
-        user.setUpdateOpr("system");
+        user.setUpdateOpr(userName);
         user.setUpdateTime(nowTime);
         user.setOperatorType("0");
-        passwordHelper.encryptPassword(user.getUsername(), user.getPassword());
-        mapper.insert(user);
+        user.setSalt(salt);
+        user.setPassword(passwordHelper.encryptPasswordSalt(user.getPassword(), salt));
+        mapper.insertSelective(user);
         return user.getId();
     }
 
@@ -108,6 +112,17 @@ public class UserServiceBaseImpl implements IUserService {
         if(i <= 0){
             throw new ErrorException(CodeMsg.USER_UPDATE_FAILED);
         }
+    }
+
+    @Override
+    public void updatePwd(User user) {
+        if(user == null || user.getId() == null){
+            throw new ErrorException(CodeMsg.USER_UPDATE_FAILED);
+        }
+        String salt = StringUtil.getRandomString(5);
+        user.setSalt(salt);
+        user.setPassword(passwordHelper.encryptPasswordSalt(user.getPassword(), salt));
+        mapper.updateByPrimaryKeySelective(user);
     }
 
     @Override

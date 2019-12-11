@@ -6,6 +6,7 @@ import com.winston.jwt.comment.RawAccessJwtToken;
 import com.winston.mapper.UserMapper;
 import com.winston.result.CodeMsg;
 import com.winston.utils.PasswordHelper;
+import com.winston.utils.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,16 +40,19 @@ public class UserServiceImpl extends UserServiceBaseImpl {
 
         String userName = rawAccessJwtToken.getUserName();
         long nowTime = new Date().getTime();
+        String salt = StringUtil.getRandomString(5);
 
-        user.setEnable(1);
+        user.setEnable("1");
         user.setState("1");
         user.setCreateOpr(userName);
         user.setCreateTime(nowTime);
         user.setUpdateOpr(userName);
         user.setUpdateTime(nowTime);
         user.setOperatorType("0");
-        user.setPassword(passwordHelper.encryptPassword(user.getUsername(), user.getPassword()));
-        mapper.insert(user);
+        user.setSalt(salt);
+        user.setPassword(passwordHelper.encryptPasswordSalt(user.getPassword(), salt));
+        mapper.insertSelective(user);
         return user.getId();
     }
+
 }
